@@ -1,0 +1,17 @@
+﻿variavel,n_outliers,lim_inf,lim_sup
+num_desenvolvedores,7,-1.0,15.0
+experiencia_media_anos,1,0.3,8.3
+duracao_planejada_dias,2,-34.6,278.4
+duracao_real_dias,4,-45.6,323.4
+atraso_dias,9,-32.0,64.0
+mudancas_requisitos,3,-7.0,33.0
+horas_extras,4,-60.2,248.7
+bugs_total,1,-22.0,82.0
+bugs_criticos,5,-5.5,14.5
+tempo_medio_correcao_horas,2,-12.4,60.7
+retrabalho_horas,1,-79.2,394.7
+custo_estimado_mil,13,-96.4,530.9
+custo_real_mil,12,-101.7,659.4
+satisfacao_cliente,8,2.0,11.2
+estouro_custo_mil,6,-53.1,175.2
+estouro_pct,9,-15.1,69.3

@@ -1,0 +1,163 @@
+======================================================================
+BASE: 220 observacoes | 24 variaveis
+Faltantes totais: 0
+======================================================================
+
+##### 3.2 / 3.3 - ESTATISTICA DESCRITIVA #####
+
+-- Quantitativas (resumo):
+                            count    mean  mediana     std    CV_%    min     25%     50%     75%     max  assimetria  curtose
+num_desenvolvedores         220.0    7.06     6.00    3.33   47.17   3.00    5.00    6.00    9.00   16.00        1.01     0.40
+experiencia_media_anos      220.0    4.28     4.30    1.45   33.96   0.80    3.30    4.30    5.30    9.10        0.04    -0.07
+duracao_planejada_dias      220.0  127.94   121.50   56.70   44.32  35.00   82.75  121.50  161.00  303.00        0.79     0.20
+duracao_real_dias           220.0  145.47   136.00   70.73   48.62  28.00   92.75  136.00  185.00  381.00        0.81     0.41
+atraso_dias                 220.0   17.54    16.00   22.15  126.29 -34.00    4.00   16.00   28.00  111.00        0.98     2.39
+mudancas_requisitos         220.0   13.05    13.00    7.24   55.50   0.00    8.00   13.00   18.00   35.00        0.43     0.32
+horas_extras                220.0   96.56    88.60   56.76   58.78   0.00   55.60   88.60  132.83  290.90        0.76     0.53
+bugs_total                  220.0   30.77    29.00   17.39   56.52   0.00   17.00   29.00   43.00   86.00        0.39    -0.28
+bugs_criticos               220.0    4.75     4.00    4.00   84.23   0.00    2.00    4.00    7.00   17.00        0.89     0.29
+tempo_medio_correcao_horas  220.0   24.36    22.00   12.41   50.97   2.00   15.02   22.00   33.30   64.50        0.71     0.31
+retrabalho_horas            220.0  161.98   160.00   83.89   51.79   0.00   98.55  160.00  217.02  421.00        0.36    -0.20
+custo_estimado_mil          220.0  245.01   220.85  132.21   53.96  68.90  138.82  220.85  295.65  672.10        1.17     0.94
+custo_real_mil              220.0  309.82   280.20  162.23   52.36  68.30  183.73  280.20  374.00  784.90        0.99     0.50
+satisfacao_cliente          220.0    6.29     6.40    1.80   28.60   1.10    5.40    6.40    7.70    9.40       -0.69     0.28
+estouro_custo_mil           220.0   64.81    58.30   43.35   66.89 -26.00   32.50   58.30   89.58  193.90        0.72     0.48
+estouro_pct                 220.0   27.40    24.11   17.06   62.25 -20.78   16.59   24.11   37.69   78.97        0.55     0.88
+
+-- Outliers (regra 1.5*IQR):
+                  variavel  n_outliers  lim_inf  lim_sup
+       num_desenvolvedores           7     -1.0     15.0
+    experiencia_media_anos           1      0.3      8.3
+    duracao_planejada_dias           2    -34.6    278.4
+         duracao_real_dias           4    -45.6    323.4
+               atraso_dias           9    -32.0     64.0
+       mudancas_requisitos           3     -7.0     33.0
+              horas_extras           4    -60.2    248.7
+                bugs_total           1    -22.0     82.0
+             bugs_criticos           5     -5.5     14.5
+tempo_medio_correcao_horas           2    -12.4     60.7
+          retrabalho_horas           1    -79.2    394.7
+        custo_estimado_mil          13    -96.4    530.9
+            custo_real_mil          12   -101.7    659.4
+        satisfacao_cliente           8      2.0     11.2
+         estouro_custo_mil           6    -53.1    175.2
+               estouro_pct           9    -15.1     69.3
+
+-- Frequencias (qualitativas):
+
+[ano_conclusao]
+               freq   pct
+ano_conclusao            
+2025            114  51.8
+2024            106  48.2
+
+[setor_cliente]
+               freq   pct
+setor_cliente            
+Governo          41  18.6
+Varejo           37  16.8
+Saúde            37  16.8
+Finanças         36  16.4
+Indústria        36  16.4
+Educação         33  15.0
+
+[metodologia]
+             freq   pct
+metodologia            
+Ágil           97  44.1
+Tradicional    75  34.1
+Híbrida        48  21.8
+
+[equipe]
+        freq   pct
+equipe            
+Beta      41  18.6
+Gamma     39  17.7
+Omega     36  16.4
+Sigma     36  16.4
+Delta     35  15.9
+Alpha     33  15.0
+
+[porte_projeto]
+               freq   pct
+porte_projeto            
+Médio            97  44.1
+Pequeno          89  40.5
+Grande           34  15.5
+
+[complexidade]
+              freq   pct
+complexidade            
+Média           81  36.8
+Alta            68  30.9
+Baixa           56  25.5
+Muito alta      15   6.8
+
+[entregue_no_prazo]
+                   freq   pct
+entregue_no_prazo            
+Não                 177  80.5
+Sim                  43  19.5
+
+##### 3.4 - RELACOES ENTRE VARIAVEIS #####
+
+-- Matriz de correlacao (Pearson):
+                        experiencia_media_anos  num_desenvolvedores  complexidade_num  atraso_dias  horas_extras  retrabalho_horas  bugs_total  bugs_criticos  custo_real_mil  satisfacao_cliente  mudancas_requisitos
+experiencia_media_anos                    1.00                 0.03             -0.03        -0.07         -0.07             -0.07       -0.12          -0.11           -0.04                0.12                -0.09
+num_desenvolvedores                       0.03                 1.00              0.43         0.38          0.49              0.59        0.62           0.51            0.81               -0.52                 0.67
+complexidade_num                         -0.03                 0.43              1.00         0.63          0.77              0.84        0.80           0.76            0.72               -0.77                 0.66
+atraso_dias                              -0.07                 0.38              0.63         1.00          0.83              0.60        0.65           0.56            0.62               -0.76                 0.56
+horas_extras                             -0.07                 0.49              0.77         0.83          1.00              0.75        0.76           0.69            0.74               -0.81                 0.73
+retrabalho_horas                         -0.07                 0.59              0.84         0.60          0.75              1.00        0.91           0.82            0.82               -0.81                 0.83
+bugs_total                               -0.12                 0.62              0.80         0.65          0.76              0.91        1.00           0.86            0.82               -0.87                 0.82
+bugs_criticos                            -0.11                 0.51              0.76         0.56          0.69              0.82        0.86           1.00            0.74               -0.86                 0.75
+custo_real_mil                           -0.04                 0.81              0.72         0.62          0.74              0.82        0.82           0.74            1.00               -0.75                 0.82
+satisfacao_cliente                        0.12                -0.52             -0.77        -0.76         -0.81             -0.81       -0.87          -0.86           -0.75                1.00                -0.74
+mudancas_requisitos                      -0.09                 0.67              0.66         0.56          0.73              0.83        0.82           0.75            0.82               -0.74                 1.00
+
+-- Correlacoes de interesse (Pearson r, p | Spearman rho, p):
+  experiencia_media_anos   x bugs_total            r=-0.124 (p=0.0653)  rho=-0.108 (p=0.1112)
+  complexidade_num         x atraso_dias           r=+0.630 (p=0.0000)  rho=+0.635 (p=0.0000)
+  retrabalho_horas         x satisfacao_cliente    r=-0.813 (p=0.0000)  rho=-0.816 (p=0.0000)
+  horas_extras             x atraso_dias           r=+0.832 (p=0.0000)  rho=+0.797 (p=0.0000)
+  custo_real_mil           x num_desenvolvedores   r=+0.813 (p=0.0000)  rho=+0.760 (p=0.0000)
+
+##### 3.5 - INTERVALOS DE CONFIANCA (95%) #####
+
+[IC1] Media de satisfacao_cliente (t-Student, gl=219)
+  media=6.286  s=1.798  n=220  t_critico=1.971
+  IC95% = [6.047 ; 6.525]  (margem +/- 0.239)
+
+[IC2] Proporcao entregue_no_prazo = 'Sim'
+  p_chapeu=0.1955  (43/220)  Z=1.960
+  IC95% = [0.1431 ; 0.2479]  -> [14.3% ; 24.8%]
+
+[IC extra] Media do estouro de custo (mil R$)
+  media=64.81  IC95% = [59.05 ; 70.57]
+
+##### 3.6 - TESTES DE HIPOTESES (alpha=0.05) #####
+
+[Teste 1] t pareado: custo real vs custo estimado
+  H0: mu_dif = 0   |   H1: mu_dif > 0 (custo real maior)
+  dif media = 64.81 mil  | t = 22.173  | p(unilateral) = 3.40e-58
+  Decisao: REJEITA H0 -> ha estouro sistematico de custo
+
+[Teste 2] Qui-quadrado: metodologia x entregue_no_prazo
+  H0: independentes  |  H1: associadas
+  Tabela observada:
+entregue_no_prazo  Não  Sim
+metodologia                
+Híbrida             39    9
+Tradicional         71    4
+Ágil                67   30
+  chi2 = 17.645  | gl = 2  | p = 0.0001
+  Decisao: REJEITA H0 (ha associacao)
+
+[Teste extra] ANOVA: satisfacao entre metodologias
+  H0: medias iguais  |  H1: ao menos uma difere
+  Medias por metodologia:
+metodologia
+Híbrida        6.279
+Tradicional    5.721
+Ágil           6.727
+  F = 6.975  | p = 0.0012  -> REJEITA H0

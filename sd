@@ -1,0 +1,400 @@
+Tamanho da Amostra (Média - População Infinita)
+n= 
+e 
+2
+ 
+Z 
+α/2
+2
+​
+ ⋅σ 
+2
+ 
+​
+ 
+n: tamanho da amostra; Z 
+α/2
+​
+ : valor crítico para o nível de confiança; σ: desvio padrão; e: erro amostral tolerável.
+Cálculo do tamanho de amostra necessário para estimar a média em populações muito grandes ou infinitas.
+[1]
+Tamanho da Amostra (Proporção - População Infinita)
+n= 
+e 
+2
+ 
+Z 
+α/2
+2
+​
+ ⋅ 
+p
+^
+​
+ (1− 
+p
+^
+​
+ )
+​
+ 
+n: tamanho da amostra;  
+p
+^
+​
+ : estimativa da proporção; e: erro amostral em decimais; Z 
+α/2
+​
+ : valor crítico.
+Cálculo do tamanho de amostra necessário para estimar proporções em populações infinitas.
+[1]
+Tamanho da Amostra (Média - População Finita)
+n= 
+e 
+2
+ (N−1)+Z 
+α/2
+2
+​
+ ⋅σ 
+2
+ 
+Z 
+α/2
+2
+​
+ ⋅σ 
+2
+ ⋅N
+​
+ 
+n: tamanho da amostra; N: tamanho da população total; σ: desvio padrão; e: erro amostral; Z 
+α/2
+​
+ : valor crítico.
+Cálculo do tamanho da amostra para médias quando o tamanho da população (N) é conhecido.
+[1]
+Tamanho da Amostra (Proporção - População Finita)
+n= 
+e 
+2
+ (N−1)+Z 
+α/2
+2
+​
+ ⋅ 
+p
+^
+​
+ (1− 
+p
+^
+​
+ )
+Z 
+α/2
+2
+​
+ ⋅ 
+p
+^
+​
+ (1− 
+p
+^
+​
+ )⋅N
+​
+ 
+n: tamanho da amostra; N: tamanho da população;  
+p
+^
+​
+ : proporção estimada; e: erro; Z 
+α/2
+​
+ : valor crítico.
+Cálculo do tamanho da amostra para proporções quando a população é finita.
+[1]
+Intervalo de Confiança para Média (σ conhecido)
+[ 
+x
+ˉ
+ −Z 
+α/2
+​
+ ⋅ 
+n
+
+​
+ 
+σ
+​
+ ; 
+x
+ˉ
+ +Z 
+α/2
+​
+ ⋅ 
+n
+
+​
+ 
+σ
+​
+ ]
+x
+ˉ
+ : média amostral; Z 
+α/2
+​
+ : valor crítico; σ: desvio padrão populacional; n: tamanho da amostra.
+Estimar a média populacional quando a variância da população é previamente conhecida.
+[2]
+Intervalo de Confiança para Média (σ desconhecido)
+[ 
+x
+ˉ
+ −t 
+α/2,(n−1)
+​
+ ⋅ 
+n
+
+​
+ 
+s
+​
+ ; 
+x
+ˉ
+ +t 
+α/2,(n−1)
+​
+ ⋅ 
+n
+
+​
+ 
+s
+​
+ ]
+x
+ˉ
+ : média amostral; s: desvio padrão da amostra; t 
+α/2,(n−1)
+​
+ : valor da distribuição t de Student com n−1 graus de liberdade.
+Estimar a média populacional quando o desvio padrão da população é desconhecido e estimado pela amostra.
+[2]
+Intervalo de Confiança para Proporção
+[ 
+p
+ˉ
+​
+ −Z 
+α/2
+​
+ ⋅ 
+n
+p
+ˉ
+​
+ (1− 
+p
+ˉ
+​
+ )
+​
+ 
+
+​
+ ; 
+p
+ˉ
+​
+ +Z 
+α/2
+​
+ ⋅ 
+n
+p
+ˉ
+​
+ (1− 
+p
+ˉ
+​
+ )
+​
+ 
+
+​
+ ]
+p
+ˉ
+​
+ : proporção observada na amostra; n: tamanho da amostra; Z 
+α/2
+​
+ : valor crítico.
+Estimar a proporção de uma característica em uma população com base em dados amostrais.
+[2]
+Padronização da Variável (Score-z)
+Z= 
+σ
+x−μ
+​
+ 
+Z: valor na escala normal padrão; x: valor observado; μ: média; σ: desvio padrão.
+Transformação de uma distribuição normal arbitrária em uma normal padrão (média 0 e desvio 1).
+[3, 4]
+Padronização da Média Amostral
+Z= 
+σ/ 
+n
+
+​
+ 
+x
+ˉ
+ −μ
+​
+ 
+x
+ˉ
+ : média da amostra; μ: média populacional; σ: desvio padrão populacional; n: tamanho da amostra.
+Uso em inferência estatística para distribuições de médias amostrais.
+[4]
+Distribuição Normal
+f(x)= 
+σ 
+2π
+
+​
+ 
+1
+​
+ ⋅e 
+− 
+2σ 
+2
+ 
+(x−μ) 
+2
+ 
+​
+ 
+ 
+μ: média populacional; σ: desvio padrão; σ 
+2
+ : variância; e≈2,71828; π≈3,14159.
+Modelagem de populações numéricas contínuas com distribuição em forma de sino.
+[3]
+Função Distribuição Acumulada (f.d.c.)
+F(x)=P(X≤x)=∫ 
+−∞
+x
+​
+ f(y)dy
+F(x): probabilidade acumulada até o ponto x; f(y): função densidade.
+Cálculo da área abaixo da curva de densidade à esquerda de um valor x.
+[3]
+Probabilidade entre dois pontos via f.d.c.
+P(a≤X≤b)=F(b)−F(a)
+F(b): acumulada no limite superior; F(a): acumulada no limite inferior; a,b: limites do intervalo.
+Uso de tabelas ou funções acumuladas para encontrar a probabilidade entre dois valores em variáveis contínuas.
+[3]
+Probabilidade em Intervalo (Variável Contínua)
+P(a≤X≤b)=∫ 
+a
+b
+​
+ f(x)dx
+P: probabilidade; a: limite inferior; b: limite superior; f(x): função densidade.
+Cálculo da probabilidade de uma variável aleatória contínua assumir valores entre dois pontos definidos.
+[3]
+Função Densidade de Probabilidade (f.d.p.) - Propriedade
+∫ 
+−∞
++∞
+​
+ f(x)dx=1
+f(x): função densidade de probabilidade; dx: diferencial da variável x.
+Aplicada para garantir que a área total sob a curva de uma variável aleatória contínua seja igual a 1.
+[3]
+Probabilidade via f.d.c. (Complemento)
+P(X>a)=1−F(a)
+P(X>a): probabilidade de X ser maior que a; F(a): função distribuição acumulada em a.
+Cálculo da probabilidade da cauda superior à direita de um ponto a.
+[3]
+Percentil para Normal Arbitrária
+x=μ+Z 
+p
+​
+ ⋅σ
+x: valor do percentil desejado; μ: média; Z 
+p
+​
+ : valor crítico de Z da tabela; σ: desvio padrão.
+Encontrar o valor real (x) que corresponde a uma probabilidade específica em uma distribuição normal.
+[4]
+Passo de Amostragem Sistemática
+r= 
+n
+N
+​
+ 
+r: intervalo de salto; N: total da população; n: tamanho da amostra.
+Determinação do intervalo para seleção de elementos em uma lista ordenada.
+[1]
+Tamanho da Amostra Estratificada (Média)
+n= 
+N 
+2
+ ⋅(e 
+2
+ /Z 
+α/2
+2
+​
+ )+∑N 
+i
+​
+ ⋅σ 
+i
+2
+​
+ 
+∑(N 
+i
+2
+​
+ ⋅σ 
+i
+2
+​
+ /w 
+i
+​
+ )
+​
+ 
+N 
+i
+​
+ : elementos do estrato i; w 
+i
+​
+ : peso do estrato; σ 
+i
+2
+​
+ : variância do estrato; e: erro; Z 
+α/2
+​
+ : valor crítico.
+Cálculo do tamanho global da amostra em populações heterogêneas divididas em estratos.
+[1]
+Tamanho da Amostra Estratificada (Proporção)            

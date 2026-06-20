@@ -1,0 +1,6 @@
+﻿par,pearson_r,p_pearson,spearman_rho,p_spearman
+experiencia_media_anos x bugs_total,-0.124,0.0653,-0.108,0.1112
+complexidade_num x atraso_dias,0.63,0.0,0.635,0.0
+retrabalho_horas x satisfacao_cliente,-0.813,0.0,-0.816,0.0
+horas_extras x atraso_dias,0.832,0.0,0.797,0.0
+custo_real_mil x num_desenvolvedores,0.813,0.0,0.76,0.0

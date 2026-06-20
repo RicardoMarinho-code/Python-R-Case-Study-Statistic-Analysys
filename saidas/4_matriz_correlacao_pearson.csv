@@ -1,0 +1,12 @@
+﻿,experiencia_media_anos,num_desenvolvedores,complexidade_num,atraso_dias,horas_extras,retrabalho_horas,bugs_total,bugs_criticos,custo_real_mil,satisfacao_cliente,mudancas_requisitos
+experiencia_media_anos,1.0,0.03,-0.03,-0.07,-0.07,-0.07,-0.12,-0.11,-0.04,0.12,-0.09
+num_desenvolvedores,0.03,1.0,0.43,0.38,0.49,0.59,0.62,0.51,0.81,-0.52,0.67
+complexidade_num,-0.03,0.43,1.0,0.63,0.77,0.84,0.8,0.76,0.72,-0.77,0.66
+atraso_dias,-0.07,0.38,0.63,1.0,0.83,0.6,0.65,0.56,0.62,-0.76,0.56
+horas_extras,-0.07,0.49,0.77,0.83,1.0,0.75,0.76,0.69,0.74,-0.81,0.73
+retrabalho_horas,-0.07,0.59,0.84,0.6,0.75,1.0,0.91,0.82,0.82,-0.81,0.83
+bugs_total,-0.12,0.62,0.8,0.65,0.76,0.91,1.0,0.86,0.82,-0.87,0.82
+bugs_criticos,-0.11,0.51,0.76,0.56,0.69,0.82,0.86,1.0,0.74,-0.86,0.75
+custo_real_mil,-0.04,0.81,0.72,0.62,0.74,0.82,0.82,0.74,1.0,-0.75,0.82
+satisfacao_cliente,0.12,-0.52,-0.77,-0.76,-0.81,-0.81,-0.87,-0.86,-0.75,1.0,-0.74
+mudancas_requisitos,-0.09,0.67,0.66,0.56,0.73,0.83,0.82,0.75,0.82,-0.74,1.0
