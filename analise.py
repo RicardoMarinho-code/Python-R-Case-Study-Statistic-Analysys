@@ -98,7 +98,7 @@ desc["assimetria"] = df[NUM].skew()                    # assimetria da distribui
 desc["curtose"] = df[NUM].kurtosis()                   # achatamento/peso das caudas
 desc["CV_%"] = 100 * df[NUM].std() / df[NUM].mean()    # coeficiente de variacao (dispersao relativa)
 desc = desc[["count", "mean", "mediana", "std", "CV_%", "min", "25%", "50%",
-             "75%", "max", "assimetria", "curtose"]].round(2)  # reordena colunas e arredonda
+             "75%", "max", "assimetria", "c urtose"]].round(2)  # reordena colunas e arredonda
 desc.to_csv("saidas/3_descritiva_quantitativas.csv", encoding="utf-8-sig")  # utf-8-sig p/ Excel ler acentos
 log("\n-- Quantitativas (resumo):")
 log(desc.to_string())
