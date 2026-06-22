@@ -1,0 +1,554 @@
+\documentclass[a4paper, 11pt]{article}
+
+% ---------------------------------------------------------------------------
+% PACOTES
+% ---------------------------------------------------------------------------
+\usepackage[portuges,brazil]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{ragged2e}
+\usepackage{caption}
+\captionsetup{font=small,labelfont=bf,skip=6pt}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage{mdframed}                 % caixas destacadas
+\usepackage[hidelinks]{hyperref}
+
+% Comando p/ nomes de variaveis em fonte monoespacada
+\newcommand{\var}[1]{\texttt{#1}}
+
+% Estilo das tabelas
+\renewcommand{\arraystretch}{1.2}
+\setlength{\tabcolsep}{6pt}
+\newcolumntype{L}{>{\RaggedRight\arraybackslash}X}
+
+% Caixa "fala de efeito / dica"
+\newmdenv[linecolor=black!55,backgroundcolor=black!5,linewidth=0.6pt,
+          roundcorner=4pt,skipabove=6pt,skipbelow=6pt,
+          innertopmargin=5pt,innerbottommargin=5pt]{fala}
+
+% Caixa "roteiro de fala" (texto que pode ser dito quase literalmente)
+\newmdenv[linecolor=blue!40,backgroundcolor=blue!4,linewidth=0.8pt,
+          roundcorner=4pt,skipabove=6pt,skipbelow=6pt,leftmargin=0pt,rightmargin=0pt,
+          innertopmargin=6pt,innerbottommargin=6pt]{roteiro}
+
+% Comando p/ pergunta provavel
+\newcommand{\pergunta}[2]{\par\smallskip\noindent\textbf{P:} \emph{#1}\\
+  \textbf{R:} #2}
+
+\title{\vspace{-1.5cm}\textbf{Guia Detalhado de Apresentação}\\[4pt]
+       \large Estudo de Caso: SoftTech Analytics --- Estatística}
+\author{Grupo: Ricardo Júnio Santos Marinho, José Miguel Madureira e Silva,\\
+        Vinicius Gabriel de Aquino Reis, Jônatas Alves Oliveira\\[2pt]
+        \small Prof. Giancarlo Andrade Machado --- Universidade Católica de Brasília}
+\date{}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\begin{fala}
+\textbf{Como usar este guia.} Para cada seção há: \textbf{(a)} um \emph{roteiro de fala}
+(caixa azul) com o texto que você pode dizer quase literalmente; \textbf{(b)} os
+\textbf{pontos a memorizar}; e \textbf{(c)} as \textbf{perguntas prováveis} com resposta. No
+fim há um \textbf{glossário} (Seção~\ref{sec:glossario}) explicando \emph{todo} conceito
+estatístico usado, uma \textbf{leitura figura por figura} (Seção~\ref{sec:figuras}) e uma
+\textbf{cola} de uma página (Seção~\ref{sec:cola}). Estudem o glossário: é dele que saem as
+perguntas-armadilha.
+\end{fala}
+
+\tableofcontents
+\newpage
+
+% ===========================================================================
+\section{Plano de tempo e estrutura}
+
+Apresentação sugerida de \textbf{\textasciitilde12--15 minutos}. Adaptem ao tempo dado.
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{} c l L @{}}
+\toprule
+\textbf{Min} & \textbf{Bloco} & \textbf{Objetivo da fala} \\
+\midrule
+0--1   & Abertura            & Contextualizar a empresa, a base e o objetivo \\
+1--3   & Base + caracterização (3.1--3.2) & Mostrar que entendemos os dados e o perfil da carteira \\
+3--6   & Desempenho + relações (3.3--3.4) & Apontar os problemas e o que está associado a quê \\
+6--9   & ICs + testes (3.5--3.6) & Provar estatisticamente os achados \\
+9--11  & Recomendações (3.7) & Traduzir evidência em decisão gerencial \\
+11--12 & Encerramento        & Síntese + ressalva de causalidade \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\begin{fala}
+\textbf{Regra de ouro do professor:} ``a simples apresentação do valor-$p$ não basta''.
+Sempre que citarem um número, \textbf{digam o que ele significa na prática}.
+\end{fala}
+
+% ===========================================================================
+\section{Abertura (\textasciitilde1 min)}
+
+\begin{roteiro}
+``Bom dia/boa tarde. Nós atuamos como uma \textbf{equipe de consultoria} contratada pela
+\textbf{SoftTech Analytics}, uma empresa de desenvolvimento de software sob demanda. Recebemos
+uma base com \textbf{220 projetos} concluídos entre \textbf{2024 e 2025} e \textbf{22
+variáveis}, e a diretoria queria saber: \emph{quais fatores afetam o desempenho dos projetos}
+--- prazo, custo, qualidade e satisfação --- \emph{e o que fazer com isso}. Toda a análise foi
+feita em \textbf{Python}, de forma automatizada e reprodutível. Importante: nosso foco não foi
+calcular por calcular, foi \textbf{interpretar} os dados para apoiar decisões.''
+\end{roteiro}
+
+\textbf{A memorizar:} 220 projetos, 22 variáveis, 2024--2025, Python, foco em interpretação.
+
+% ===========================================================================
+\section{Conhecimento da base (3.1)}
+
+\begin{roteiro}
+``Primeiro precisávamos \textbf{entender os dados}. Cada \textbf{linha é um projeto} e cada
+\textbf{coluna é um indicador}. São \textbf{220 observações}, \textbf{22 variáveis} e
+\textbf{zero valores faltantes} --- ou seja, a base estava completa, não precisamos tratar
+dados ausentes. O passo mais importante aqui foi \textbf{classificar cada variável pela sua
+natureza estatística}, porque isso decide o que podemos fazer com ela: variável
+\textbf{qualitativa} pede tabela de frequência e gráfico de barras; variável
+\textbf{quantitativa} permite média, desvio, intervalo de confiança e teste de hipótese.''
+\end{roteiro}
+
+\textbf{Detalhe os 4 tipos (rápido):}
+\begin{itemize}[noitemsep]
+	\item \textbf{Qualitativa nominal} --- categoria sem ordem (setor, metodologia, equipe).
+	\item \textbf{Qualitativa ordinal} --- categoria com ordem (porte: Pequeno $<$ Médio $<$ Grande).
+	\item \textbf{Quantitativa discreta} --- contagem, números inteiros (nº de bugs, de devs).
+	\item \textbf{Quantitativa contínua} --- medição, admite decimais (custo, horas, experiência).
+\end{itemize}
+
+\textbf{Casos de fronteira (cite 1--2, demonstram domínio):}
+\begin{itemize}[noitemsep]
+	\item \var{ano\_conclusao}: é número, mas funciona como \textbf{rótulo temporal} $\to$
+	      qualitativa ordinal (``média de ano'' não faz sentido).
+	\item \var{satisfacao\_cliente}: escala 0--10; como tem decimais e tiramos média e IC dela,
+	      \textbf{tratamos como quantitativa} (registrando que tecnicamente é escala).
+	\item \var{id\_projeto}: identificador --- \textbf{não entra} em nenhum cálculo.
+	\item \var{atraso\_dias}: pode ser \textbf{negativo} (entrega antecipada), o que é válido.
+\end{itemize}
+
+\textbf{A memorizar:} 220 / 22 / 0 faltantes; os 4 tipos; pelo menos 1 caso de fronteira.
+
+\pergunta{Por que \var{ano} não é quantitativa, se é número?}{Porque é um rótulo temporal; tirar média de ano não tem sentido prático. Tem ordem, então é qualitativa ordinal.}
+\pergunta{Qual a diferença entre discreta e contínua?}{Discreta é contagem (inteiros, ``quantos''); contínua é medição e admite decimais (``quanto'').}
+
+% ===========================================================================
+\section{Caracterização dos projetos (3.2)}
+
+\begin{roteiro}
+``Caracterizando a carteira: a empresa trabalha principalmente com projetos de porte
+\textbf{Médio (44\%) e Pequeno (40\%)} --- juntos, \textbf{85\%} dos projetos. A metodologia
+mais usada é a \textbf{Ágil (44\%)}, seguida da Tradicional (34\%) e da Híbrida (22\%). As
+\textbf{seis equipes são bem equilibradas} em volume, o que é bom porque permite comparar o
+desempenho delas sem viés. A experiência média das equipes é de cerca de \textbf{4,3 anos}, com
+distribuição quase simétrica. E a complexidade se concentra nos níveis Médio e Alto; projetos
+de complexidade \emph{Muito alta} são raros (7\%), mas, como vamos ver, são os mais
+problemáticos.''
+\end{roteiro}
+
+\textbf{A memorizar:} 85\% pequeno+médio; Ágil 44\%; 6 equipes equilibradas; experiência 4,3 anos;
+Muito alta só 6,8\%.
+
+\pergunta{Por que destacar que as equipes estão equilibradas?}{Para garantir que, ao comparar desempenho entre equipes/metodologias, a diferença não venha de uma ter muito mais projetos que a outra.}
+\pergunta{O que vocês usaram para descrever variável qualitativa?}{Tabela de frequência (contagem e percentual) e gráfico de barras.}
+
+% ===========================================================================
+\section{Indicadores de desempenho (3.3)}
+
+\begin{roteiro}
+``Olhando os indicadores de desempenho, três coisas saltam aos olhos. \textbf{Primeiro}, a
+duração \textbf{real (145 dias)} é sistematicamente maior que a \textbf{planejada (128 dias)} --- o
+atraso médio é de \textbf{17,5 dias}, mas com uma dispersão altíssima: o coeficiente de variação
+é de \textbf{126\%}, com projetos indo de 34 dias adiantados a 111 atrasados. \textbf{Segundo}, o
+\textbf{custo real (310 mil)} é cerca de \textbf{26\% maior} que o estimado (245 mil).
+\textbf{Terceiro}, a satisfação é a única variável com \textbf{assimetria negativa}: a maioria dos
+clientes dá nota boa, mas existe uma cauda de \textbf{8 projetos com notas muito baixas} que
+puxa a média para baixo. O padrão geral é que \textbf{um subgrupo de projetos problemáticos}
+concentra os piores resultados.''
+\end{roteiro}
+
+\textbf{Medidas que usamos e por quê:}
+\begin{itemize}[noitemsep]
+	\item \textbf{Média e mediana} --- centro dos dados; quando diferem muito, há assimetria/outliers.
+	\item \textbf{Desvio padrão e CV} --- dispersão (CV permite comparar variáveis de escalas diferentes).
+	\item \textbf{Assimetria} --- lado da cauda (positiva = cauda à direita; negativa = à esquerda).
+	\item \textbf{Boxplot e regra 1,5$\times$IQR} --- visualizar dispersão e contar \emph{outliers}.
+\end{itemize}
+
+\textbf{A memorizar:} real 145 $>$ planejada 128; atraso CV \textbf{126\%}; custo \textbf{+26\%};
+satisfação assimetria \textbf{$-0{,}69$} (8 outliers baixos).
+
+\pergunta{O que um CV de 126\% indica?}{O desvio padrão é maior que a própria média --- o atraso é extremamente imprevisível, varia muito de projeto para projeto.}
+\pergunta{Por que olhar a mediana além da média?}{A média é sensível a outliers; quando média e mediana diferem, é sinal de assimetria. Aqui custo e atraso são puxados por projetos grandes.}
+\pergunta{O que é um outlier no trabalho?}{Valor fora do intervalo $[Q_1-1{,}5\,\text{IQR};\ Q_3+1{,}5\,\text{IQR}]$. Ex.: 9 projetos com atraso acima de 64 dias.}
+
+% ===========================================================================
+\section{Relações entre variáveis (3.4)}
+
+\begin{roteiro}
+``Aqui investigamos \textbf{o que está associado a quê}, usando correlação. Os achados mais
+fortes: \textbf{bugs e satisfação têm correlação de $-0{,}87$} --- ou seja, quanto mais defeitos,
+menos satisfeito o cliente; é a qualidade que o cliente sente. \textbf{Horas extras e atraso têm
+$+0{,}83$}: isso mostra que hora extra é \emph{reação} ao atraso, não solução. E um resultado
+\textbf{contraintuitivo}: a \textbf{experiência da equipe quase não se correlaciona com bugs}
+($-0{,}12$, e \emph{não} significativo). Ao contrário do que se esperaria, equipe mais
+experiente não entregou menos defeitos --- o que sugere que a qualidade depende mais da
+\textbf{complexidade do projeto} do que da senioridade. E aqui o cuidado mais importante:
+\textbf{correlação não é causalidade}. Quase todas essas variáveis estão correlacionadas porque
+compartilham um \textbf{fator de fundo: a complexidade do projeto}.''
+\end{roteiro}
+
+\textbf{Tabela mental das correlações (decorar os sinais e a magnitude):}
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{} L c L @{}}
+\toprule
+\textbf{Par} & \textbf{$r$} & \textbf{Leitura} \\
+\midrule
+Bugs $\times$ satisfação        & $-0{,}87$ & quanto mais bug, menos satisfação (muito forte) \\
+Horas extras $\times$ atraso    & $+0{,}83$ & andam juntos; hora extra é reação ao atraso \\
+Retrabalho $\times$ satisfação  & $-0{,}81$ & mais retrabalho, menos satisfação \\
+Custo real $\times$ nº devs     & $+0{,}81$ & projeto maior custa mais \\
+Complexidade $\times$ atraso    & $+0{,}63$ & complexo atrasa mais \\
+Experiência $\times$ bugs       & $-0{,}12$ & \textbf{sem associação significativa} (surpresa) \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{A memorizar:} bugs$\leftrightarrow$satisfação $-0{,}87$; horas extras$\leftrightarrow$atraso $+0{,}83$;
+experiência$\leftrightarrow$bugs $-0{,}12$ (n.s.); ``correlação $\neq$ causa''.
+
+\pergunta{Então a experiência da equipe é irrelevante?}{Nos dados, ela não reduziu os defeitos de forma estatisticamente significativa. Não dá para afirmar que ajuda na qualidade; o fator dominante é a complexidade.}
+\pergunta{Por que usaram Pearson \emph{e} Spearman?}{Pearson mede relação linear; Spearman mede relação por postos (monótona) e é mais robusto a outliers. Como os dois deram resultados parecidos, a conclusão é confiável.}
+\pergunta{Correlação alta prova que um causa o outro?}{Não. Indica associação. Pode haver uma terceira variável (a complexidade) influenciando ambas.}
+
+% ===========================================================================
+\section{Intervalos de confiança (3.5)}
+
+\begin{roteiro}
+``Construímos intervalos de confiança de 95\% para dois parâmetros que interessam à diretoria.
+\textbf{Primeiro}, a \textbf{satisfação média} ficou em \textbf{[6,05 ; 6,53]} --- ou seja, com
+95\% de confiança, a satisfação média da carteira está nessa faixa, que é apenas mediana numa
+escala de 0 a 10. \textbf{Segundo}, a \textbf{proporção de projetos entregues no prazo} ficou em
+\textbf{[14,3\% ; 24,8\%]} --- mesmo no melhor cenário, no máximo cerca de 1 em 4 projetos sai no
+prazo. Isso mostra que a baixa pontualidade é um \textbf{problema estrutural}, não pontual. E um
+terceiro intervalo, de apoio: o \textbf{estouro de custo médio} está entre \textbf{59 e 71 mil
+reais por projeto}.''
+\end{roteiro}
+
+\begin{table}[H]
+\centering
+\caption{Intervalos de confiança (95\%).}
+\begin{tabularx}{\textwidth}{@{} c L l L @{}}
+\toprule
+\textbf{IC} & \textbf{Parâmetro / método} & \textbf{Resultado} & \textbf{O que significa} \\
+\midrule
+1 & Média da satisfação ($t$-Student, gl=219) & $[6{,}05;\,6{,}53]$ & Satisfação só mediana \\
+2 & Proporção no prazo (aprox.\ Normal) & $[14{,}3\%;\,24{,}8\%]$ & \textasciitilde1 em 4 no prazo \\
+3 & Média do estouro de custo ($t$-Student) & $[59{,}1;\,70{,}6]$ mil & +60 a 71 mil por projeto \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\textbf{Por que cada método (PERGUNTA CERTA):}
+\begin{itemize}[noitemsep]
+	\item \textbf{IC~1 e IC~3 usam $t$-Student} porque o desvio populacional $\sigma$ é
+	      \textbf{desconhecido} e foi estimado da amostra.
+	\item \textbf{IC~2 usa a Normal} porque é uma \textbf{proporção} e a amostra é grande ($n=220$).
+\end{itemize}
+
+\textbf{A memorizar:} satisfação [6,05; 6,53]; prazo [14,3\%; 24,8\%]; ``$t$ porque $\sigma$ é desconhecido''.
+
+\pergunta{O que é, em palavras, um IC de 95\%?}{É uma faixa de valores plausíveis para o parâmetro da \textbf{população}. Se repetíssemos a amostragem muitas vezes, cerca de 95\% dos intervalos conteriam o valor verdadeiro.}
+\pergunta{O IC de prazo diz que cada projeto tem 19,5\% de chance?}{Não. 19,5\% é a taxa \emph{observada} na amostra; o IC afirma que a taxa \emph{populacional} está, com 95\% de confiança, entre 14,3\% e 24,8\%.}
+\pergunta{Por que não usaram $Z$ na satisfação?}{Porque $\sigma$ é desconhecido; com $\sigma$ estimado, o correto é a distribuição $t$ de Student.}
+
+% ===========================================================================
+\section{Testes de hipóteses (3.6)}
+
+\begin{fala}
+Para \textbf{cada} teste, fale na ordem: \textbf{objetivo} $\to$ \textbf{H$_0$} $\to$
+\textbf{H$_1$} $\to$ \textbf{$\alpha=0{,}05$} $\to$ \textbf{resultado ($p$)} $\to$
+\textbf{decisão} $\to$ \textbf{interpretação prática}. Nunca pare no $p$-valor.
+\end{fala}
+
+\subsection{Teste 1 --- O custo real supera o estimado? ($t$ pareado)}
+\begin{roteiro}
+``Queríamos saber se o estouro de custo é \textbf{sistemático} ou só azar. A hipótese nula é que
+o custo real é igual ao estimado; a alternativa, que o real é maior. Usamos um \textbf{teste $t$
+pareado} --- pareado porque os dois custos vêm do \emph{mesmo} projeto. O resultado: diferença
+média de \textbf{65 mil reais} e um $p$-valor praticamente zero (\textbf{$3\times10^{-58}$}).
+\textbf{Rejeitamos a hipótese nula}: o estouro é sistemático, cerca de \textbf{27\% acima do
+orçado}. Na prática, isso aponta uma falha no processo de \textbf{estimativa} de custos.''
+\end{roteiro}
+
+\subsection{Teste 2 --- A metodologia influencia a entrega no prazo? (qui-quadrado)}
+\begin{roteiro}
+``Aqui cruzamos duas variáveis \textbf{qualitativas}: metodologia e entrega no prazo (Sim/Não).
+A hipótese nula é que são \textbf{independentes}. Usamos o teste \textbf{qui-quadrado}. Deu
+$\chi^2=17{,}65$ e $p=0{,}0001$, então \textbf{rejeitamos a nula}: existe associação. Na prática,
+projetos \textbf{Ágeis entregam no prazo 30,9\% das vezes, contra apenas 5,3\% dos
+Tradicionais} --- cerca de \textbf{6 vezes mais}. É uma evidência forte a favor das práticas
+ágeis.''
+\end{roteiro}
+
+\begin{table}[H]
+\centering
+\caption{Tabela de contingência: metodologia $\times$ entrega no prazo.}
+\begin{tabular}{@{} l c c c @{}}
+\toprule
+\textbf{Metodologia} & \textbf{Não} & \textbf{Sim} & \textbf{\% no prazo} \\
+\midrule
+Ágil        & 67 & 30 & \textbf{30,9\%} \\
+Híbrida     & 39 & 9  & 18,8\% \\
+Tradicional & 71 & 4  & \textbf{5,3\%} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Teste 3 (extra) --- A satisfação difere entre metodologias? (ANOVA)}
+\begin{roteiro}
+``Por fim, comparamos a \textbf{satisfação média} entre as três metodologias com uma
+\textbf{ANOVA}. A nula é que as três médias são iguais. Resultado: $F=6{,}98$, $p=0{,}0012$ ---
+\textbf{rejeitamos a nula}. A satisfação é maior na Ágil (6,73) e menor na Tradicional (5,72),
+o que é coerente com o resultado de prazo do teste anterior.''
+\end{roteiro}
+
+\textbf{A memorizar:} custo $p\approx3\times10^{-58}$ (pareado); qui-quadrado $p=0{,}0001$
+(Ágil 30,9\% vs Trad. 5,3\%); ANOVA $p=0{,}0012$. \textbf{Regra:} rejeita H$_0$ quando $p<0{,}05$.
+
+\pergunta{O que é a hipótese nula?}{É a hipótese de que ``não há efeito'' (sem diferença ou sem associação). Só a rejeitamos se houver evidência forte, isto é, $p<\alpha$.}
+\pergunta{Por que o teste de custo é pareado e não independente?}{Porque os dois valores (estimado e real) pertencem ao mesmo projeto; as amostras estão emparelhadas, não são grupos separados.}
+\pergunta{Por que qui-quadrado e não teste t no Teste 2?}{Porque as duas variáveis são qualitativas (metodologia e Sim/Não). O teste t é para médias de variáveis quantitativas.}
+\pergunta{O que significa rejeitar H$_0$ com $\alpha=0{,}05$?}{Que a probabilidade de observar esse resultado se a nula fosse verdadeira é menor que 5\% --- evidência suficiente para concluir que há efeito.}
+
+% ===========================================================================
+\section{Recomendações para a diretoria (3.7)}
+
+\begin{roteiro}
+``Traduzindo tudo em recomendações: \textbf{(1)} \emph{rever o processo de estimativa de custos},
+porque o estouro é sistemático e vale de 59 a 71 mil por projeto; \textbf{(2)} \emph{expandir o
+uso de metodologias ágeis}, que entregam no prazo seis vezes mais e com maior satisfação;
+\textbf{(3)} \emph{tratar a pontualidade como problema estrutural} --- só 14 a 25\% dos projetos
+saem no prazo, e horas extras não resolvem, só reagem; \textbf{(4)} \emph{priorizar a redução de
+defeitos}, que são o maior fator de insatisfação; e \textbf{(5)} \emph{gerenciar de perto a
+complexidade}, que é o fator de fundo por trás de atraso, custo e retrabalho. Tudo isso com uma
+ressalva: são \textbf{associações estatísticas}, não causas provadas --- precisam ser validadas
+com o conhecimento de negócio.''
+\end{roteiro}
+
+\textbf{A memorizar:} 5 recomendações, cada uma ligada a uma evidência (custo$\to$T1;
+ágil$\to$T2/T3; prazo$\to$IC2; defeitos$\to$correlações; complexidade$\to$fator latente).
+
+% ===========================================================================
+\section{Encerramento}
+
+\begin{roteiro}
+``Em resumo: a SoftTech tem três problemas centrais e mensuráveis --- \textbf{estouro
+sistemático de custo}, \textbf{pontualidade estruturalmente baixa} e \textbf{qualidade puxando a
+satisfação}. A boa notícia é que os dados apontam direções claras: melhorar a estimativa, adotar
+mais o Ágil e investir em qualidade. Reforçando que correlação não é causalidade, mas as
+evidências são consistentes. Obrigado, estamos à disposição para perguntas.''
+\end{roteiro}
+
+% ===========================================================================
+\section{Glossário --- conceitos que precisamos dominar}
+\label{sec:glossario}
+
+\begin{fala}
+É deste glossário que saem as perguntas-armadilha. Cada um deve conseguir explicar estes termos
+\textbf{com as próprias palavras}.
+\end{fala}
+
+\subsection*{Tipos de variável}
+\begin{description}[leftmargin=1.5cm,style=nextline]
+\item[Qualitativa] Representa categoria/rótulo. \emph{Nominal}: sem ordem (setor). \emph{Ordinal}:
+com ordem (porte). Analisa-se com frequência, moda, barras e qui-quadrado.
+\item[Quantitativa] Representa número. \emph{Discreta}: contagem, inteiros (bugs). \emph{Contínua}:
+medição com decimais (custo). Analisa-se com média, desvio, IC, correlação e teste $t$.
+\end{description}
+
+\subsection*{Medidas de posição e dispersão}
+\begin{description}[leftmargin=1.5cm,style=nextline]
+\item[Média] Soma dividida por $n$. Sensível a valores extremos (outliers).
+\item[Mediana] Valor central (50\%). Robusta a outliers. Se média $\neq$ mediana, há assimetria.
+\item[Desvio padrão] Quão espalhados estão os dados em torno da média (mesma unidade dos dados).
+\item[Coeficiente de variação (CV)] $=$ desvio/média (em \%). Permite comparar a dispersão de
+variáveis de escalas diferentes. CV alto $=$ muito heterogêneo.
+\item[Assimetria] Mede o lado da cauda. Positiva: cauda à direita (ex.: custo). Negativa: cauda à
+esquerda (ex.: satisfação). $\approx 0$: simétrica.
+\item[Quartis e IQR] $Q_1$ (25\%), $Q_2$ (mediana), $Q_3$ (75\%). $\text{IQR}=Q_3-Q_1$.
+\item[Outlier (regra de Tukey)] Valor fora de $[Q_1-1{,}5\,\text{IQR};\ Q_3+1{,}5\,\text{IQR}]$.
+\item[Boxplot] Gráfico que mostra mediana, quartis e outliers de uma variável.
+\end{description}
+
+\subsection*{Associação entre variáveis}
+\begin{description}[leftmargin=1.5cm,style=nextline]
+\item[Correlação de Pearson ($r$)] Mede a força e o sinal da relação \textbf{linear}, de $-1$ a
+$+1$. Perto de $0$: sem relação linear. Perto de $\pm1$: relação forte.
+\item[Correlação de Spearman ($\rho$)] Mede relação \textbf{monótona} (por postos); mais robusta a
+outliers. Usada como verificação do Pearson.
+\item[Causalidade] Correlação \textbf{não} prova causa. Pode existir variável de fundo (aqui, a
+complexidade) influenciando ambas.
+\end{description}
+
+\subsection*{Inferência}
+\begin{description}[leftmargin=1.5cm,style=nextline]
+\item[População vs amostra] A amostra (220 projetos) é usada para inferir sobre a população (todos
+os projetos da empresa).
+\item[Nível de confiança / significância] Confiança $=95\%$; significância $\alpha=0{,}05$ (são
+complementares: $1-\alpha$).
+\item[Intervalo de confiança (IC)] Faixa de valores plausíveis para um parâmetro populacional, com
+dado nível de confiança.
+\item[$t$ de Student vs $Z$ (Normal)] Usa-se $Z$ quando $\sigma$ (desvio da população) é conhecido;
+usa-se $t$ quando $\sigma$ é \textbf{estimado da amostra} (caso deste trabalho). $t$ depende dos
+graus de liberdade ($n-1$).
+\item[Hipótese nula (H$_0$)] Afirmação de ``nada acontece'' (sem diferença/associação).
+\item[Hipótese alternativa (H$_1$)] O que se quer mostrar (há diferença/associação).
+\item[$p$-valor] Probabilidade de obter um resultado tão (ou mais) extremo que o observado,
+\emph{se H$_0$ fosse verdadeira}. \textbf{$p<\alpha$ $\Rightarrow$ rejeita H$_0$.}
+\item[Teste unilateral vs bilateral] Unilateral testa uma direção (real $>$ estimado); bilateral
+testa diferença em qualquer direção.
+\end{description}
+
+\subsection*{Os testes usados}
+\begin{description}[leftmargin=1.5cm,style=nextline]
+\item[Teste $t$ pareado] Compara duas medições do \textbf{mesmo} indivíduo/projeto (custo estimado
+vs real). Testa se a média das diferenças é zero.
+\item[Qui-quadrado de independência] Testa se duas variáveis \textbf{qualitativas} estão
+associadas, comparando frequências observadas e esperadas. Resultado em $\chi^2$ e graus de
+liberdade.
+\item[ANOVA (um fator)] Compara a \textbf{média} de uma variável quantitativa entre \textbf{3 ou
+mais} grupos. Estatística $F$; se $p<\alpha$, ao menos um grupo difere.
+\end{description}
+
+% ===========================================================================
+\section{Leitura figura por figura}
+\label{sec:figuras}
+
+Se forem projetar as figuras da pasta \var{figuras/}, eis o que dizer de cada uma:
+
+\begin{description}[leftmargin=0.2cm,style=nextline]
+\item[\var{barra\_porte\_projeto.png} / \var{barra\_metodologia.png}] ``Mostra a composição da
+carteira: predominam projetos pequenos/médios e a metodologia Ágil.''
+\item[\var{hist\_experiencia\_media\_anos.png}] ``Histograma quase simétrico em torno de 4,3 anos:
+equipes homogêneas em experiência.''
+\item[\var{barra\_complexidade.png}] ``Complexidade concentrada em Média/Alta; Muito alta é rara.''
+\item[\var{boxplots\_desempenho.png}] ``Cada caixa é um indicador. Repare nos pontos fora das
+caixas --- são os \emph{outliers}: atraso, custo e horas extras têm outliers altos; satisfação
+tem outliers baixos.''
+\item[\var{heatmap\_correlacao.png}] ``Mapa de calor das correlações. Vermelho forte = correlação
+positiva alta; azul = negativa. O bloco central (bugs, retrabalho, custo, atraso) é todo
+vermelho: andam juntos. A linha da experiência é quase branca: não se correlaciona com nada.''
+\item[\var{scatter\_horas\_extras\_\_atraso\_dias.png}] ``Nuvem subindo da esquerda para a direita
+($r=+0{,}83$): mais horas extras, mais atraso.''
+\item[\var{scatter\_retrabalho\_horas\_\_satisfacao\_cliente.png}] ``Nuvem descendo
+($r=-0{,}81$): mais retrabalho, menos satisfação.''
+\end{description}
+
+% ===========================================================================
+\section{Divisão da fala --- quem fala o quê}
+\label{sec:divisao}
+
+\begin{fala}
+\textbf{Ricardo é o líder do grupo}: abre, fecha e faz a costura entre as partes (as
+``passagens de bastão''). Cada integrante domina \textbf{a sua parte e os números-chave dela}, e
+todos leem o glossário (qualquer um pode receber uma pergunta).
+\end{fala}
+
+\subsection*{Visão geral da ordem}
+
+\begin{table}[H]
+\centering
+\begin{tabularx}{\textwidth}{@{} c l c L @{}}
+\toprule
+\textbf{Ordem} & \textbf{Quem} & \textbf{Tempo} & \textbf{Seções} \\
+\midrule
+1º & \textbf{Ricardo} (líder) & \textasciitilde2 min & Abertura + Base de dados (3.1) \\
+2º & José Miguel             & \textasciitilde3 min & Caracterização (3.2) + Desempenho (3.3) \\
+3º & Vinicius Gabriel        & \textasciitilde3 min & Relações (3.4) + Intervalos de confiança (3.5) \\
+4º & Jônatas                 & \textasciitilde3 min & Testes de hipóteses (3.6) \\
+5º & \textbf{Ricardo} (líder) & \textasciitilde2 min & Recomendações (3.7) + Encerramento \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection*{1º --- Ricardo Júnio (líder): abertura + base (3.1)}
+\textbf{Fala:} usa o roteiro da \textbf{Seção~2 (Abertura)} e da \textbf{Seção~3 (Base 3.1)}.\\
+\textbf{Deve dominar:} 220 / 22 / 0 faltantes; os 4 tipos de variável; 1 caso de fronteira.\\
+\textbf{Passagem de bastão:} ``Agora o José Miguel vai mostrar o \emph{perfil} desses projetos.''
+
+\subsection*{2º --- José Miguel: caracterização (3.2) + desempenho (3.3)}
+\textbf{Fala:} roteiros da \textbf{Seção~4 (3.2)} e da \textbf{Seção~5 (3.3)}.\\
+\textbf{Deve dominar:} 85\% pequeno+médio; Ágil 44\%; experiência 4,3 anos; atraso CV 126\%;
+custo +26\%; satisfação com 8 outliers baixos.\\
+\textbf{Passagem de bastão:} ``Mas o que está \emph{associado} a esses problemas? O Vinicius explica.''
+
+\subsection*{3º --- Vinicius Gabriel: relações (3.4) + ICs (3.5)}
+\textbf{Fala:} roteiros da \textbf{Seção~6 (3.4)} e da \textbf{Seção~7 (3.5)}.\\
+\textbf{Deve dominar:} bugs$\leftrightarrow$satisfação $-0{,}87$; horas extras$\leftrightarrow$atraso
+$+0{,}83$; experiência$\leftrightarrow$bugs $-0{,}12$ (n.s.); ICs [6,05; 6,53] e [14,3\%; 24,8\%];
+``$t$ porque $\sigma$ é desconhecido''; ``correlação $\neq$ causa''.\\
+\textbf{Passagem de bastão:} ``Para \emph{provar} esses achados, o Jônatas apresenta os testes.''
+
+\subsection*{4º --- Jônatas: testes de hipóteses (3.6)}
+\textbf{Fala:} roteiros da \textbf{Seção~8 (3.6)} --- os três testes, sempre na ordem
+objetivo $\to$ H$_0$ $\to$ H$_1$ $\to$ $\alpha$ $\to$ $p$ $\to$ decisão $\to$ interpretação.\\
+\textbf{Deve dominar:} custo $p\approx3\times10^{-58}$ (pareado); qui-quadrado $p=0{,}0001$
+(Ágil 30,9\% vs Trad. 5,3\%); ANOVA $p=0{,}0012$; ``rejeita H$_0$ quando $p<0{,}05$''.\\
+\textbf{Passagem de bastão:} ``Com isso provado, o Ricardo fecha com as recomendações.''
+
+\subsection*{5º --- Ricardo Júnio (líder): recomendações (3.7) + encerramento}
+\textbf{Fala:} roteiros da \textbf{Seção~9 (3.7)} e da \textbf{Seção~10 (Encerramento)}.\\
+\textbf{Deve dominar:} as 5 recomendações ligadas às evidências; a ressalva ``correlação não é causa''.\\
+\textbf{Encerra} e abre para perguntas (todos respondem a da sua parte; Ricardo coordena).
+
+\begin{fala}
+\textbf{Dica de líder (Ricardo):} se alguém travar ou estourar o tempo, você faz a ponte (``vou
+complementar...'') e segue. Nas perguntas, se ninguém souber, assuma e responda pelo grupo.
+\end{fala}
+
+% ===========================================================================
+\section{``Cola'' final --- números para decorar}
+\label{sec:cola}
+
+\begin{fala}
+\begin{itemize}[noitemsep]
+	\item \textbf{220} projetos $\cdot$ \textbf{22} variáveis $\cdot$ \textbf{0} faltantes.
+	\item \textbf{84,6\%} pequeno+médio $\cdot$ Ágil \textbf{44\%} $\cdot$ experiência \textbf{4,3} anos.
+	\item Atraso CV \textbf{126\%} $\cdot$ custo real \textbf{+26\%} acima do estimado.
+	\item Satisfação IC \textbf{[6,05; 6,53]} $\cdot$ prazo IC \textbf{[14,3\%; 24,8\%]} $\cdot$ estouro \textbf{[59; 71] mil}.
+	\item Bugs$\leftrightarrow$satisfação \textbf{$-0{,}87$} $\cdot$ horas extras$\leftrightarrow$atraso \textbf{$+0{,}83$}.
+	\item Experiência$\leftrightarrow$bugs \textbf{$-0{,}12$ (não significativo)} $\leftarrow$ o achado surpresa.
+	\item Custo: $p\approx 3\times10^{-58}$ $\cdot$ qui-quadrado: $p=0{,}0001$ $\cdot$ ANOVA: $p=0{,}0012$.
+	\item Ágil \textbf{30,9\%} no prazo vs Tradicional \textbf{5,3\%} ($\approx 6\times$).
+\end{itemize}
+\end{fala}
+
+% ===========================================================================
+\section{Perguntas-armadilha mais prováveis}
+
+\begin{enumerate}[leftmargin=*]
+	\item \textbf{Correlação prova causa?} Não; há fator latente (complexidade).
+	\item \textbf{Por que $t$ e não $Z$ no IC da satisfação?} Porque $\sigma$ populacional é desconhecido.
+	\item \textbf{O que significa $p<0{,}05$?} Evidência suficiente para rejeitar H$_0$ ao nível de 5\%.
+	\item \textbf{Experiência não importa mesmo?} Nos dados, não reduziu bugs de forma significativa.
+	\item \textbf{O que é um outlier aqui?} Valor fora de 1,5$\times$IQR (ex.: 9 atrasos extremos).
+	\item \textbf{Qual o maior problema da empresa?} Estouro de custo + baixa pontualidade (ambos estruturais).
+	\item \textbf{Por que ANOVA e não vários testes $t$?} Para comparar 3 grupos de uma vez, controlando o erro.
+	\item \textbf{O IC garante que o valor está dentro?} Não com certeza; com 95\% de confiança no método.
+\end{enumerate}
+
+\end{document}
